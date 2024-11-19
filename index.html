@@ -1,0 +1,777 @@
+<!doctype html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+     /* Definišemo klasu za pozadinsku sliku sa providnošću */
+  .bg-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:url("restoran2.jpg"); /* Putanja do slike */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4; /* Podesite nivo providnosti */
+    z-index: -1; /* Pozicionira pozadinsku sliku iza sadržaja */
+  }
+   /* Custom styles for the dropdown behavior */
+   .group:hover .dropdown {
+            display: block;
+        }
+
+        .dropdown {
+            display: none;
+        }
+
+        .group {
+            position: relative;
+        }
+
+        .dropdown {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 12rem; /* Set width for the dropdown */
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.375rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .group:hover .dropdown {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .dropdown a:hover {
+            background-color:#bebce7;
+            color: rgba(85, 59, 156, 0.527);
+        }
+  </style>
+  </head>
+ <header class="absolute inset-x-0 top-0 z-50">
+  <nav class="w-full bg-transparent z-50 ">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Logo and Brand -->
+        <div class="flex items-center space-x-4">
+            <img src="/posture_and_performance_logo_white.png" alt="Logo" class="w-12 h-12">
+            <h1 class="text-white text-2xl font-bold bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">STELLA</h1>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex space-x-8">
+            <a href="#o_nama" class="text-white hover:text-indigo-400 transition duration-300">O nama</a>
+            
+            <!-- Posture Dropdown -->
+            <div class="relative group">
+                <button class="text-white hover:text-indigo-400 flex items-center space-x-1">
+                    <span>Meni</span>
+                    <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <!-- Dropdown Menu -->
+                <div class="dropdown">
+                    <a href="/posture/foot">Predjelo</a>
+                    <a href="/posture/knee">Salate</a>
+                    <a href="/posture/spinal/lower-back">Piva</a>
+                    <a href="/posture/spinal/shoulders-and-head">Sokovi</a>
+                    <a href="/posture/muscleimbalance">Vina</a>
+                    <a href="/posture/muscleimbalance">Topli napici</a>
+                    <a href="/posture/muscleimbalance">Dezerti</a>
+                </div>
+            </div>
+
+            <a href="#dogadjaji" class="text-white hover:text-indigo-400 transition duration-300">Događaji</a>
+            <a href="#kontakt" class="text-white hover:text-indigo-400 transition duration-300">Kontakti</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuButton" class="md:hidden text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div id="mobileMenu" class="md:hidden bg-transparent text-white space-y-4 p-6">
+        <a href="about" class="block text-lg">O nama</a>
+        <div class="relative">
+            <button id="mobilePostureButton" class="block text-lg">Meni</button>
+            <div id="mobilePostureDropdown" class="hidden space-y-2 mt-2 bg-gray-700 p-4 rounded-lg">
+                <a href="/posture/foot" class="block py-1">Predjelo</a>
+                <a href="/posture/knee" class="block py-1">Salate</a>
+                <a href="/posture/spinal/lower-back" class="block py-1">Piva</a>
+                <a href="/posture/spinal/shoulders-and-head" class="block py-1">Sokovi</a>
+                <a href="/posture/muscleimbalance" class="block py-1">Vina</a>
+                <a href="/posture/muscleimbalance" class="block py-1">Topli napici</a>
+                <a href="/posture/muscleimbalance" class="block py-1">Dezerti</a>
+            </div>
+        </div>
+        <a href="performance" class="block text-lg">Događaji</a>
+        <a href="contact" class="block text-lg">Kontakti</a>
+    </div>
+</nav>
+<script>
+  // JavaScript for handling mobile dropdowns
+  document.addEventListener("DOMContentLoaded", function () {
+      const mobileMenuButton = document.getElementById("mobileMenuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobilePostureButton = document.getElementById("mobilePostureButton");
+      const mobilePostureDropdown = document.getElementById("mobilePostureDropdown");
+
+      // Toggle mobile menu
+      mobileMenuButton.addEventListener("click", function () {
+          mobileMenu.classList.toggle("hidden");
+      });
+
+      // Toggle mobile dropdown
+      mobilePostureButton.addEventListener("click", function () {
+          mobilePostureDropdown.classList.toggle("hidden");
+      });
+  });
+</script>
+</header>
+  <div class="relative isolate bg-overlay px-6 pt-14 lg:px-8">
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+      <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+      <div class="text-center">
+        <h1 class="text-balance text-4xl font-serif tracking-widest text-gray-900 sm:text-6xl">STELLA</h1>
+        <p class="mt-6 text-lg leading-8 text-gray-600">Ukusi koji osvajaju – svaki zalogaj je doživljaj!</p>
+      </div>
+    </div>
+    <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+      <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>
+  </div>
+  </div>
+  <!--/************PRODUCT LIST**********/-->
+<section id="meni">
+  <div class="bg-gradient-to-r from-grey-500 to-white-500 bg-overlay relative">
+    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <h2 class="text-3xl font-bold tracking-tight text-grey-900 inline-flex items-center"><span class="mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+          <path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"></path>
+        </svg>
+      </span>Meni</h2><br><br>
+      <div class="container mx-auto py-4">
+       <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"> <span class="mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+      </span>Predjelo</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+      <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="food1.webp" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium  text-gray-700 truncate hover:text-clip">Goveđi biftek sa sosom od pečuraka</h3>
+            <p class="mt-1 text-sm text-gray-900 truncate">Sočni goveđi biftek, srednje pečen, poslužen sa kremastim sosom od pečuraka i pire krompirom</p>
+            <p class="mt-1 text-sm text-yellow-900">15$</p>
+          </a>
+          </div>
+            <div class="bg-white rounded-lg shadow-lg text-center">
+              <a href="#" class="group">
+                <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                  <img src="food2.jpg" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="h-full w-full object-cover object-center group-hover:opacity-75">
+                </div>
+                <h3 class="mt-4 text-lg font-medium  text-gray-700">Pasta karbonara</h3>
+                <p class="mt-1 text-sm text-gray-900 truncate">Tradicionalna italijanska pasta sa sosom od pavlake, parmezana, prženom slaninom i crnim biberom.</p>
+                <p class="mt-1 text-sm text-yellow-900">10$</p>
+              </a>
+              </div>
+              <div class="bg-white rounded-lg shadow-lg text-center">
+                <a href="#" class="group">
+                  <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                    <img src="food3.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+                  </div>
+                  <h3 class="mt-4 text-lg font-medium text-gray-700">Pileći file u sosu od belog vina</h3>
+                  <p class="mt-1 text-sm text-gray-900 truncate">Nežan pileći file sa sosom od belog vina i začinskim biljem</p>
+                  <p class="mt-1 text-sm text-yellow-900">17$</p>
+                </a>
+              </div>
+              <div class="bg-white rounded-lg shadow-lg text-center">
+                <a href="#" class="group">
+                  <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                    <img src="food4.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+                  </div>
+                  <h3 class="mt-4 text-lg font-medium text-gray-700">Losos na žaru sa povrćem</h3>
+                  <p class="mt-1 text-sm text-gray-900 truncate">Filet lososa pečen na žaru, poslužen uz grilovano povrće i osvežavajući sos od limuna i maslinovog ulja.</p>
+                  <p class="mt-1 text-sm text-yellow-900">22$</p>
+                </a>
+              </div>
+              <div class="bg-white rounded-lg shadow-lg text-center">
+                <a href="#" class="group">
+                  <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                    <img src="food3.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+                  </div>
+                  <h3 class="mt-4 text-lg font-medium text-gray-700">Teleća šnicla sa krompir salatom</h3>
+                  <p class="mt-1 text-sm text-gray-900 truncate">Pohovana teleća šnicla, hrskava i sočna, poslužena sa klasičnom krompir salatom i limunom za dodatnu svežinu.</p>
+                  <p class="mt-1 text-sm text-yellow-900">20$</p>
+                </a>
+              </div>
+        </div>
+        </div>
+    </div>
+    <div class="container mx-auto px-7">
+      <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"><span class="mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+      </span>Salate</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="salata1.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Cezar salata</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Klasična salata sa hrskavom rimskom salatom, krutonima, parmezanom i dresingom od ančousa, uz dodatak pilećih fileta ili grilovanih škampi.</p>
+              <p class="mt-1 text-sm text-yellow-900">20$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="salata2.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Salata od cvekle i kozjeg sira</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Kombinacija pečene cvekle, svežeg kozjeg sira, rukole i preliv od balzamika, uz dodatak oraha za dodatnu hrskavost.</p>
+              <p class="mt-1 text-sm text-yellow-900">20$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="salata4.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Azijska salata sa piletinom</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Salata sa povrćem poput šargarepe, paprike, mladog luka i hrskavog kupusa, uz grilovanu piletinu, posuta susamom i prelivena dresingom od sojinog sosa, đumbira i limete.</p>
+              <p class="mt-1 text-sm text-yellow-900">20$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="salata4.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Grčka salata</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Osvežavajuća salata sa paradajzom, krastavcem, crvenim lukom, maslinama i feta sirom, prelivena maslinovim uljem i origanom.</p>
+              <p class="mt-1 text-sm text-yellow-900">20$</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="container mx-auto px-8 py-10">
+        <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"> <span class="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+        </span>Piva</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="pivo1.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">IPA (India Pale Ale)</h3>
+            <p class="mt-1 text-sm text-yellow-900">6$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="pivo3.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Lager</h3>
+            <p class="mt-1 text-sm text-yellow-900">5$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="pivo3.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Pilsner</h3>
+            <p class="mt-1 text-sm text-yellow-900">5$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="pivo4.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Wheat Beer(Pšenično pivo)</h3>
+            <p class="mt-1 text-sm text-yellow-900">5$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="pivo2.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Sour Ale</h3>
+            <p class="mt-1 text-sm text-yellow-900">5$</p>
+          </a>
+        </div>
+      </div>
+      </div>
+      <div class="container mx-auto px-7">
+        <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"><span class="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+        </span>Sokovi</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok1.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Naranđža i đumbir</h3>
+            <p class="mt-1 text-sm text-yellow-900">6$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok2.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Ananas i kokos</h3>
+            <p class="mt-1 text-sm text-yellow-900">7$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok3.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Šumsko voće</h3>
+            <p class="mt-1 text-sm text-yellow-900">8$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok4.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">zeleni detoks</h3>
+            <p class="mt-1 text-sm text-yellow-900">6$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok5.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Mango</h3>
+            <p class="mt-1 text-sm text-yellow-900">6$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok6.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Lubenica i nana</h3>
+            <p class="mt-1 text-sm text-yellow-900">6$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="sok7.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Limeta</h3>
+            <p class="mt-1 text-sm text-yellow-900">6$</p>
+          </a>
+        </div>
+      </div>
+      </div>
+      <div class="container mx-auto px-7">
+        <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"><span class="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+        </span>Vina</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+          <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="vino1.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Crveno vino-Cabernet Sauvignon</h3>
+            <p class="mt-1 text-sm text-yellow-900">12$</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg text-center">
+          <a href="#" class="group">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <img src="vino2.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">Belo vino - Chardonnay</h3>
+            <p class="mt-1 text-sm text-yellow-900">12$</p>
+          </a>
+        </div>
+      </div>
+      </div>
+      <div class="container mx-auto px-7">
+        <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"><span class="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+        </span>Topli napici</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak1.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Espresso</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak2.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Cappuccino</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak3.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Latte</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak4.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Moka</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak5.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Čaj od mente</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak6.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Zeleni čaj</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak8.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Beli čaj sa medom</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak7.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Topla čokolada</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak9.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Chai latte</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="napitak10.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Vruće vino sa začinima</h3>
+              <p class="mt-1 text-sm text-yellow-900">3$</p>
+            </a>
+          </div>
+          </div>
+        </div>
+      <div class="container mx-auto px-7">
+        <h3 class="text-xl  font-semibold text-grey-600 inline-flex items-center"><span class="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z"></path> <path d="M6.161 17.009l11.839 -.009"></path> </svg> 
+        </span>Deserti</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-5">
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert1.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Čokoladni fondan</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Bogat čokoladni kolač sa rastopljenim čokoladnim srcem, posut sa šećerom u prahu i posluženo uz kuglu vanilin sladoleda.</p>
+              <p class="mt-1 text-sm text-yellow-900">12$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert2.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Tiramisu</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Tradicionalni italijanski desert sa slojevima piškota natopljenih kafom i kremastim slojem mascarpone sira, posut kakaom.</p>
+              <p class="mt-1 text-sm text-yellow-900">12$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert3.webp" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Panna cotta sa malinama</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Glatka, kremasta panna cotta sa prelivom od svežih malina i mrvicama karamelizovanog šećera.</p>
+              <p class="mt-1 text-sm text-yellow-900">13$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert4.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Lemon meringue pie</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Kremasti limunasti fil sa hrskavim biskvitom, prekriven belancima umućenim u mekani šne, zapečen do zlatno-smeđe boje.</p>
+              <p class="mt-1 text-sm text-yellow-900">10$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert5.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Cheesecake sa jagodama</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Kremasti kolač od sira sa hrskavim biskvitnim dnom i prelivom od svežih jagoda i žela.</p>
+              <p class="mt-1 text-sm text-yellow-900">15$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert6.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Karamelni puding</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Bogat puding od vanile sa karamelizovanim šećerom, posut sa mrvicama karamelizovanih badema</p>
+              <p class="mt-1 text-sm text-yellow-900">10$</p>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg text-center">
+            <a href="#" class="group">
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                <img src="dezert7.jpg" alt="Pileći file u sosu od belog vina" class="h-full w-full object-cover object-center group-hover:opacity-75">
+              </div>
+              <h3 class="mt-4 text-lg font-medium text-gray-700">Štrudla sa jabukama</h3>
+              <p class="mt-1 text-sm text-gray-900 truncate">Tradicionalna štrudla sa filom od jabuka, cimeta i oraha, posuta prah šećerom i poslužena uz kuglu sladoleda od vanile. daj mi propmtove za ove dezerte</p>
+              <p class="mt-1 text-sm text-yellow-900">12$</p>
+            </a>
+          </div>
+    </div>
+  </div>
+</div>
+</section>
+<!--/*********O NAMA**************/-->
+<section id="o_nama">
+  <div class="bg-gradient-to-r from-grey-500 to-white-500 bg-overlay py-10">
+  <h3 class="text-3xl font-semibold text-center text-gray-900 mb-1 sm:text-4xl">O NAMA</h3>
+  <div class="flex flex-col sm:flex-row relative py-15 px-6 sm:py-32">
+      <div class="sm:w-1/2 flex items-center py-6 sm:p-12">
+        <p class="mt-6 text-lg leading-8 text-black p-2  w-full">Restoran STELLA je savršeno mesto za ljubitelje vrhunske kuhinje i prijatne atmosfere. Smešten u srcu grada, naš restoran nudi spoj tradicionalnih i modernih jela, pripremljenih od najkvalitetnijih, svežih namirnica. Poseban naglasak stavljamo na sezonske proizvode i autentične recepte, stvarajući nezaboravne kulinarske doživljaje. U toplom ambijentu našeg restorana možete uživati u pažljivo osmišljenom meniju koji obuhvata sve od savršenih predjela, preko bogatih glavnih jela, do ukusnih deserata. Bilo da dolazite na poslovni ručak, porodičnu večeru ili specijalnu priliku, naše ljubazno osoblje i posvećeni tim će se pobrinuti da vaše iskustvo bude na najvišem nivou.</p>
+      </div>
+      <div class="sm:w-1/2 h-full">
+        <img src="restoran1.jpg" class="h-full w-full object-cover">
+      </div>
+  </div>
+</div>
+  </section>
+  <!--/******************DOGADJAJI*******/-->
+  <section id="dogadjaji">
+    <div class="bg-gradient-to-r from-grey-500 to-white-500">
+    <div class="container mx-auto px-8 py-10">
+      <h3 class="text-3xl font-semibold text-center text-gray-900 sm:text-4xl">Događaji</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-10">
+      <div class="relative overflow-hidden rounded-lg shadow-lg bg-white lg:w-3/2 transform transition duration-300 hover:scale-105">
+        <img src="rodj1.webp" alt="image alt text" class="w-full h-full object-cover"/>
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-white opacity-90 px-5 py-2 rounded-lg shadow-lg text-center w-full">
+          <h3 class="text-lg font-semibold text-gray-900">Proslave rodjendana</h3>
+          <p class="text-gray-600">Proslavite kao nikad do sada, rodjendan za pamcenje u nasem restoranu!</p>
+        </div>
+      </div>
+      <div class="relative overflow-hidden rounded-lg shadow-lg bg-white lg:w-3/2 transform transition duration-300 hover:scale-105">
+        <img src="svadba1.webp" alt="image alt text" class="w-full h-full object-cover"/>
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-white opacity-90 px-5 py-2 rounded-lg shadow-lg text-center w-full">
+          <h3 class="text-lg font-semibold text-gray-900">Proslavite svadbe</h3>
+          <p class="text-gray-600">Dan iz snova zaslužuje prostor iz snova - proslavite ljubav u našem restoranu!</p>
+        </div>
+        </div>
+        <div class="relative overflow-hidden rounded-lg shadow-lg bg-white lg:w-3/2 transform transition duration-300 hover:scale-105">
+          <img src="krstenje1.webp" alt="image alt text" class="w-full h-full object-cover"/>
+          <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-white opacity-90 px-5 py-2 rounded-lg shadow-lg text-center w-full">
+            <h3 class="text-lg font-semibold text-gray-900">Proslavite krštenja</h3>
+            <p class="text-gray-600">Uz ljubav i veru, proslavite krštenje u prelepom ambijentu našeg restorana.</p>
+          </div>
+        </div>
+        <div class="relative overflow-hidden rounded-lg shadow-lg bg-white lg:w-3/2 transform transition duration-300 hover:scale-105">
+          <img src="penzija.webp" alt="image alt text" class="w-full h-full object-cover"/>
+          <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-white opacity-90 px-5 py-2 rounded-lg shadow-lg text-center w-full">
+            <h3 class="text-lg font-semibold text-gray-900">Proslavite ispraćaj u penziju</h3>
+            <p class="text-gray-600">Odlazak u penziju – vreme je za uživanje bez ograničenja, srećna penzija!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+<!----/*********KONTAKT*********/---->
+<section id="kontakt">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <h1 class="text-4xl font-bold text-center my-10">Kontakti</h1>
+
+    <div class="bg-white dark:bg-slate-900 dark:border border-slate-800 p-6 rounded-lg shadow-lg">
+      <!-- Google Map Embed -->
+      <div class="mb-6">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.837358669894!2d-74.00912598459072!3d40.72037994312716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316b3c5b71%3A0x8f5b0be96e2e0f84!2s121%20King%20St%2C%20New%20York%2C%20NY%2010013%2C%20USA!5e0!3m2!1sen!2sin!4v1633280517406!5m2!1sen!2sin"
+          width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+
+      <div class="flex flex-col md:flex-row">
+        <!-- Contact Form -->
+        <div class="md:w-full lg:w-2/3">
+          <h2 class="text-2xl font-bold">Kontaktirajte nas</h2>
+          <p class="text-gray-900 dark:text-gray-400 mb-6">
+            Pošaljite poruku. Kontaktiraćemo vas što je pre moguće.
+          </p>
+
+          <form action="#" method="POST" class="space-y-4 mb-9">
+            <div class="flex flex-col lg:flex-row lg:space-x-4">
+              <input type="text" name="name" placeholder="Your Name (*)" required
+                class="lg:w-1/2 w-full p-3 bg-gray-200 dark:text-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-600 mb-4 lg:mb-0" />
+
+              <input type="email" name="email" placeholder="Your Email (*)" required
+                class="lg:w-1/2 w-full p-3 bg-gray-200 dark:text-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+            </div>
+
+            <input type="text" name="subject" placeholder="Subject"
+              class="w-full p-3 bg-gray-200 dark:text-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+
+            <textarea name="message" placeholder="Your Message"
+              class="w-full p-3 bg-gray-200 dark:text-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-600"></textarea>
+
+            <button type="submit"
+              class="px-6 py-3 bg-slate-700 dark:bg-slate-900 dark:border border-4 border-slate-700 text-white rounded-md dark:hover:bg-slate-950">
+              Pošalji
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="md:w-full lg:w-1/3 lg:pl-6 lg:mt-20 md:pl-3 space-y-4">
+          <!-- Phone -->
+          <div class="flex items-center space-x-2">
+            <div class="text-gray-900 p-2 rounded-full border-2 border-gray-300">
+              <!-- Phone Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone" width="18" height="18"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#f3f3f5" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-900 dark:text-gray-300">Broj telefona</p>
+              <p class="text-gray-600 dark:text-gray-300">+381 33 44 55</p>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="flex items-center space-x-2">
+            <div class="text-gray-900 p-2 rounded-full border-2 border-gray-300">
+              <!-- Email Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="18" height="18"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#f3f3f5" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                <path d="M3 7l9 6l9 -6" />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-900 dark:text-gray-300">Email</p>
+              <p class="text-gray-600 dark:text-gray-300">info@coaches.com</p>
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="flex items-center space-x-2">
+            <div class="text-gray-900 p-2 rounded-full border-2 border-gray-300">
+              <!-- Address Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin" width="18" height="18"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#f3f3f5" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-900 dark:text-gray-300">Restoran</p>
+              <p class="text-gray-600 dark:text-gray-300">Trg Jakaba i Komora 28, Beograd, Serbia</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="bg-gray-900 text-gray-300 py-8">
+  <div class="container mx-auto text-center">
+      <div class="flex justify-center space-x-6 mb-4">
+          <a href="#meni" class="hover:text-gray-100">Meni</a>
+          <a href="#o_nama" class="hover:text-gray-100">O Nama</a>
+          <a href="#rezervacije" class="hover:text-gray-100">Rezervacije</a>
+          <a href="#kontakt" class="hover:text-gray-100">Kontakti</a>
+      </div>
+      <div class="flex justify-center space-x-6 mb-4">
+          <a href="#" class="text-gray-400 hover:text-gray-100"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-gray-400 hover:text-gray-100"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-gray-400 hover:text-gray-100"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-gray-400 hover:text-gray-100"><i class="fab fa-youtube"></i></a>
+      </div>
+      <p class="text-gray-500">&copy; 2024 STELLA. All rights reserved.</p>
+  </div>
+</footer>
+</div>
+
+</body>
+</html>
